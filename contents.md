@@ -26,6 +26,26 @@
     2. database(Mysql)에 해당 목록 및 컨텐츠 저장하기
 
 
+📖 page
+
+
+    1.숭례문(한양도성 part) p.47
+    2.광화문(경복궁 part) p.54~55
+    3.
+
+
+<details>
+<summary>🥕table "</summary>
+
+<div markdown="1">
+|No|건축물 이름|건축물의 역사|
+|--|--------||------------------|
+|1|숭례문|
+|2|광화문|
+</div>
+</details>
+
+
 참고하면 좋을 책
         
         
