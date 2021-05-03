@@ -1,4 +1,4 @@
-:heavy_check_mark: App에 포함될 contents :heavy_check_mark:
+:heavy_check_mark: **App에 포함될 contents** :heavy_check_mark:
 
 
 <hr>
