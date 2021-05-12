@@ -5,6 +5,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.RequestQueue;
@@ -26,12 +27,19 @@ public class RegisterActivity extends AppCompatActivity {
     EditText et_id;
     @BindView(R.id.et_pass)
     EditText et_pass;
+    @BindView(R.id.et_sex)
+    EditText et_sex;
     @BindView(R.id.et_age)
     EditText et_age;
     @BindView(R.id.et_name)
     EditText et_name;
+    @BindView(R.id.et_nation)
+    EditText et_nation;
     @BindView(R.id.btn_register)
     Button btn_register;
+    @BindView(R.id.btn_checkid)
+    Button btn_checkid;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +48,36 @@ public class RegisterActivity extends AppCompatActivity {
         ButterKnife.bind(this);
     }
 
+    private boolean validate = false;
+    private AlertDialog.Builder dialog;
+    @OnClick(R.id.btn_checkid)
+    void checkid(){
+        String userID = et_id.getText().toString();
+        if(validate){
+            return;
+        }
+        if(userID.equals("")){
+            AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+            dialog = builder.setMessage("아이디가 빈칸입니다!")
+                    .setPositiveButton("확인",null);
+                    // .create();
+
+            dialog.show();
+            return;
+        }
+
+    }
+
+
     @OnClick(R.id.btn_register)
     void Register() {
         String userID = et_id.getText().toString();
         String userPass = et_id.getText().toString();
         String userName = et_name.getText().toString();
+        String userSex = et_sex.getText().toString();
         int userAge = Integer.parseInt(et_age.getText().toString());
+        String userNation = et_nation.getText().toString();
+
 
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
@@ -70,7 +102,8 @@ public class RegisterActivity extends AppCompatActivity {
         };
 
         //서버로 Volley를 이용해서 요청
-        RegisterUtils registerRequest = new RegisterUtils(userID, userPass, userName, userAge, responseListener);
+        RegisterUtils registerRequest = new RegisterUtils(userID, userPass, userName, userAge,
+                userSex,userNation, responseListener);
         RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
         queue.add(registerRequest);
     }

@@ -41,6 +41,17 @@
             android:textColorHint="@color/input_register_hint" />
 
         <EditText
+            android:id="@+id/et_sex"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@color/input_register_bg"
+            android:hint="성별을 입력하세요"
+            android:inputType="textEmailAddress"
+            android:padding="10dp"
+            android:textColor="@color/input_register"
+            android:textColorHint="@color/input_register_hint" />
+        <EditText
             android:id="@+id/et_name"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -63,7 +74,17 @@
             android:padding="10dp"
             android:textColor="@color/input_register"
             android:textColorHint="@color/input_register_hint" />
-
+        <EditText
+            android:id="@+id/et_nation"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@color/input_register_bg"
+            android:hint="국적을 입력하세요"
+            android:inputType="textEmailAddress"
+            android:padding="10dp"
+            android:textColor="@color/input_register"
+            android:textColorHint="@color/input_register_hint" />
         <Button
             android:id="@+id/btn_register"
             android:layout_width="fill_parent"
@@ -73,6 +94,18 @@
             android:text="@string/btn_register"
             android:textColor="@color/black"
             app:backgroundTint="#FFF79A" />
+        <Button
+            android:id="@+id/btn_checkid"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:backgroundTint="#FFF79A"
+            android:text="아이디 중복체크"
+            android:textColor="@color/black"
+            android:background="#ea4c88"
+            android:layout_marginTop="20dip"
+
+            />
+
 
     </LinearLayout>
 </LinearLayout>

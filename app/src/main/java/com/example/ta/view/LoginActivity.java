@@ -53,26 +53,15 @@ public class LoginActivity extends AppCompatActivity {
         String userPass = et_pass.getText().toString();
 
         Response.Listener<String> responseListener = response -> {
-            Log.e("test", "onResponse: " + response);
             try {
                 JSONObject jsonObject = new JSONObject(response);
                 boolean success = jsonObject.getBoolean("success");
 
                 if (success) {//로그인 성공시
-                    String userID1 = jsonObject.getString("userID");
-                    String userPass1 = jsonObject.getString("userPassword");
-                    String userName = jsonObject.getString("userName");
-                    String userAge = jsonObject.getString("userAge");
-
                     Toast.makeText(getApplicationContext(), "로그인 성공", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-
-                    intent.putExtra("userID", userID1);
-                    intent.putExtra("userPass", userPass1);
-                    intent.putExtra("userName", userName);
-                    intent.putExtra("userAge", userAge);
-
                     startActivity(intent);
+                    finish();
 
                 } else {//로그인 실패시
                     Toast.makeText(getApplicationContext(), "로그인 실패", Toast.LENGTH_SHORT).show();
@@ -86,5 +75,6 @@ public class LoginActivity extends AppCompatActivity {
         LoginUtils loginRequest = new LoginUtils(userID, userPass, responseListener);
         RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
         queue.add(loginRequest);
+
     }
 }

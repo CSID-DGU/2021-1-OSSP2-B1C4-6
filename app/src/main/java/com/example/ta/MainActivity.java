@@ -26,6 +26,10 @@ import androidx.core.content.FileProvider;
 import com.example.ta.util.PackageManagerUtils;
 import com.example.ta.util.PermissionUtils;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
@@ -54,7 +58,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener {
+
+public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener, OnMapReadyCallback {
 
     @BindView(R.id.fab)
     FloatingActionButton fab;
@@ -92,7 +97,24 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.main_image);
+        mapFragment.getMapAsync((OnMapReadyCallback) this);
+
         tts = new TextToSpeech(this, this);
+    }
+
+
+    @Override
+    public void onMapReady(final GoogleMap googleMap){
+        mMap = googleMap;
+
+        com.google.android.gms.maps.model.LatLng SEOUL = new LatLng(37.56,126.97);
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(SEOUL);
+        markerOptions.title("서울");
+        markerOptions.snippet("한국의 수도");
+        mMap.addMarker(markerOptions);
     }
 
     @OnClick(R.id.fab)
