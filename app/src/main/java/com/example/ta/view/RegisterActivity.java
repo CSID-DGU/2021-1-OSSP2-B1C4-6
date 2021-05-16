@@ -52,11 +52,11 @@ public class RegisterActivity extends AppCompatActivity {
     private AlertDialog.Builder dialog;
     @OnClick(R.id.btn_checkid)
     void checkid(){
-        String userID = et_id.getText().toString();
+        String UserId = et_id.getText().toString();
         if(validate){
             return;
         }
-        if(userID.equals("")){
+        if(UserId.equals("")){
             AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
             dialog = builder.setMessage("아이디가 빈칸입니다!")
                     .setPositiveButton("확인",null);
@@ -71,12 +71,12 @@ public class RegisterActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_register)
     void Register() {
-        String userID = et_id.getText().toString();
-        String userPass = et_id.getText().toString();
-        String userName = et_name.getText().toString();
-        String userSex = et_sex.getText().toString();
-        int userAge = Integer.parseInt(et_age.getText().toString());
-        String userNation = et_nation.getText().toString();
+        String UserId = et_id.getText().toString();
+        String UserPwd = et_id.getText().toString();
+        String UserName = et_name.getText().toString();
+        String UserSex = et_sex.getText().toString();
+        int UserAge = Integer.parseInt(et_age.getText().toString());
+        String UserNation = et_nation.getText().toString();
 
 
         Response.Listener<String> responseListener = new Response.Listener<String>() {
@@ -102,8 +102,8 @@ public class RegisterActivity extends AppCompatActivity {
         };
 
         //서버로 Volley를 이용해서 요청
-        RegisterUtils registerRequest = new RegisterUtils(userID, userPass, userName, userAge,
-                userSex,userNation, responseListener);
+        RegisterUtils registerRequest = new RegisterUtils(UserId, UserPwd, UserName, UserAge,
+                UserSex,UserNation, responseListener);
         RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
         queue.add(registerRequest);
     }

@@ -1,6 +1,7 @@
 package com.example.ta;
 
 import android.Manifest;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -25,9 +26,10 @@ import androidx.core.content.FileProvider;
 
 import com.example.ta.util.PackageManagerUtils;
 import com.example.ta.util.PermissionUtils;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -59,8 +61,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener, OnMapReadyCallback {
+public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener,OnMapReadyCallback{
 
+    private static String ApiName;
     @BindView(R.id.fab)
     FloatingActionButton fab;
     @BindView(R.id.image_details)
@@ -74,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     @BindView(R.id.ttsButton)
     Button ttsButton;
 
-    private static final String CLOUD_VISION_API_KEY = "AIzaSyCXrkmC-Y9Y14_1eweqxLBrVaXjLR0f3kg";
+    private static final String CLOUD_VISION_API_KEY = "AIzaSyB0HdLQsYYLT3ltcZjhxhuOO47Msx_73M8";
     public static final String FILE_NAME = "temp.jpg";
     private static final String ANDROID_CERT_HEADER = "X-Android-Cert";
     private static final String ANDROID_PACKAGE_HEADER = "X-Android-Package";
@@ -91,15 +94,14 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     private TextToSpeech tts;
 
 
+    private FragmentManager fragmentManager;
+    private MapFragment mapFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.main_image);
-        mapFragment.getMapAsync((OnMapReadyCallback) this);
 
         tts = new TextToSpeech(this, this);
     }
@@ -115,6 +117,8 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         markerOptions.title("서울");
         markerOptions.snippet("한국의 수도");
         mMap.addMarker(markerOptions);
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(SEOUL));
+
     }
 
     @OnClick(R.id.fab)
@@ -382,7 +386,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         }
         return Bitmap.createScaledBitmap(bitmap, resizedWidth, resizedHeight, false);
     }
-
     private static String convertResponseToString(BatchAnnotateImagesResponse response) {
         StringBuilder message = new StringBuilder();
         //LABEL.GETDISCRIPTION == 타이틀(건물) 이름
@@ -391,8 +394,15 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             //서버 통신 건물 정보 가져오기
             //텍스트뷰에 정보 붙히기
             EntityAnnotation label = labels.get(0);
-            message.append(String.format(Locale.US, "%s", label.getDescription()));
+            ApiName = label.getDescription();
+
+
+
+
+            message.append(String.format(Locale.US, "%s", ApiName));
             message.append("\n");
+
+
         } else {
             message.append("nothing");
         }

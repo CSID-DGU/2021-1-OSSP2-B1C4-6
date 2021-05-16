@@ -49,8 +49,8 @@ public class LoginActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_login)
     void onLogin() {
-        String userID = et_id.getText().toString();
-        String userPass = et_pass.getText().toString();
+        String UserId = et_id.getText().toString();
+        String UserPwd = et_pass.getText().toString();
 
         Response.Listener<String> responseListener = response -> {
             try {
@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
                 Log.e("test", "onResponse: " + e.toString());
             }
         };
-        LoginUtils loginRequest = new LoginUtils(userID, userPass, responseListener);
+        LoginUtils loginRequest = new LoginUtils(UserId, UserPwd, responseListener);
         RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
         queue.add(loginRequest);
 
