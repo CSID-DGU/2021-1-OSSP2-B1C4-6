@@ -24,6 +24,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+import com.example.ta.util.GetInfoUtils;
 import com.example.ta.util.PackageManagerUtils;
 import com.example.ta.util.PermissionUtils;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -47,6 +51,9 @@ import com.google.api.services.vision.v1.model.BatchAnnotateImagesResponse;
 import com.google.api.services.vision.v1.model.EntityAnnotation;
 import com.google.api.services.vision.v1.model.Feature;
 import com.google.api.services.vision.v1.model.Image;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -318,7 +325,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         return annotateRequest;
     }
 
-    private static class LableDetectionTask extends AsyncTask<Object, Void, String> {
+    private class LableDetectionTask extends AsyncTask<Object, Void, String> {
         private final WeakReference<MainActivity> mActivityWeakReference;
         private Vision.Images.Annotate mRequest;
 
@@ -386,8 +393,9 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         }
         return Bitmap.createScaledBitmap(bitmap, resizedWidth, resizedHeight, false);
     }
-    private static String convertResponseToString(BatchAnnotateImagesResponse response) {
+    private String convertResponseToString(BatchAnnotateImagesResponse response) {
         StringBuilder message = new StringBuilder();
+
         //LABEL.GETDISCRIPTION == 타이틀(건물) 이름
         List<EntityAnnotation> labels = response.getResponses().get(0).getLandmarkAnnotations();
         if (labels != null) {
@@ -395,12 +403,30 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             //텍스트뷰에 정보 붙히기
             EntityAnnotation label = labels.get(0);
             ApiName = label.getDescription();
-
-
-
-
             message.append(String.format(Locale.US, "%s", ApiName));
             message.append("\n");
+
+            Response.Listener<String> responseListener = new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
+                        String name = jsonObject.getString("name");
+                        String history = jsonObject.getString("history");
+                        String explain = jsonObject.getString("explain");
+                        String issue = jsonObject.getString("issue");
+                        String maker = jsonObject.getString("maker");
+
+                        info.setText(explain);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            GetInfoUtils getInfoUtils = new GetInfoUtils(ApiName, responseListener);
+            RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+            queue.add(getInfoUtils);
+
 
 
         } else {

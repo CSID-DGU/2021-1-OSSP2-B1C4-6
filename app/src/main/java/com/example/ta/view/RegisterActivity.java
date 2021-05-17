@@ -12,6 +12,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.example.ta.R;
+import com.example.ta.util.CheckIdUtils;
 import com.example.ta.util.RegisterUtils;
 
 import org.json.JSONException;
@@ -49,23 +50,55 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private boolean validate = false;
-    private AlertDialog.Builder dialog;
+    private AlertDialog dialog;
+
     @OnClick(R.id.btn_checkid)
     void checkid(){
         String UserId = et_id.getText().toString();
+
         if(validate){
             return;
         }
         if(UserId.equals("")){
             AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
             dialog = builder.setMessage("아이디가 빈칸입니다!")
-                    .setPositiveButton("확인",null);
-                    // .create();
+                    .setPositiveButton("확인",null)
+                    .create();
 
             dialog.show();
             return;
         }
-
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    boolean success = jsonObject.getBoolean("success");
+                    //회원가입 성공시
+                    if (success) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                        dialog = builder.setMessage("사용할 수 있는 아이디입니다")
+                                        .setPositiveButton("확인",null)
+                                        .create();
+                        dialog.show();
+                        et_id.setEnabled(false);
+                        validate=true;
+                        //중복아닐시
+                    } else {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                        dialog = builder.setMessage("사용할 수 없는 아이디입니다")
+                                .setPositiveButton("확인",null)
+                                .create();
+                        dialog.show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        CheckIdUtils checkIdUtils = new CheckIdUtils(UserId, responseListener);
+        RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
+        queue.add(checkIdUtils);
     }
 
 

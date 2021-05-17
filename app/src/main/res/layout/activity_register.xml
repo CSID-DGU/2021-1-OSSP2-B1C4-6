@@ -96,7 +96,7 @@
             app:backgroundTint="#FFF79A" />
         <Button
             android:id="@+id/btn_checkid"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="match_parent"
             app:backgroundTint="#FFF79A"
             android:text="아이디 중복체크"
