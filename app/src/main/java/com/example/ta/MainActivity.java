@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     @BindView(R.id.ttsButton)
     Button ttsButton;
 
-    private static final String CLOUD_VISION_API_KEY = "AIzaSyB0HdLQsYYLT3ltcZjhxhuOO47Msx_73M8";
+    private static final String CLOUD_VISION_API_KEY = "API_KEY";
     public static final String FILE_NAME = "temp.jpg";
     private static final String ANDROID_CERT_HEADER = "X-Android-Cert";
     private static final String ANDROID_PACKAGE_HEADER = "X-Android-Package";
