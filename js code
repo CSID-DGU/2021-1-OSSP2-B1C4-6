@@ -12,66 +12,14 @@ app.listen(port, function () {
 });
 
 var connection = mysql.createConnection({
-    host: "",
-    user: "",
-    database: "",
-    password: "",
+    host: "android-db.cdxhx8loaxjb.ap-northeast-2.rds.amazonaws.com",
+    user: "TOUR2021",
+    database: "TOUR",
+    password: "12345678",
     port: 3306
 });
 
-//---------------------------temp register/login
-app.post('/temp/register', function (req, res) {
-    var userID = req.body.userID;
-    var userPassword = req.body.userPassword;
-    var userName = req.body.userName;
-    var userAge = req.body.userAge;
-
-    var sql = 'insert into temp (userID, userPassword, userName, userAge) values (?, ?, ?, ?)';
-    var params = [userID, userPassword, userName, userAge];
-
-    connection.query(sql, params, function(err, result){
-        if(err)
-        console.logd(err);
-        else{
-            res.json({
-                'success': true,
-                'message': '회원가입에 성공하셨습니다.'
-            });
-        }
-    });
-});
-
-app.post('/temp/login', function (req, res) {
-    var userID = req.body.userID;
-    var userPassword = req.body.userPassword;
-
-    var sql = 'select * from temp where userID = ?';
-
-    connection.query(sql, userID, function(err, result){
-        if(err) {
-            console.log(err);
-        } else{
-            if (result.length == 0){
-                res.json({
-                    'success' : false,
-                    'message': '존재하지 않는 계정입니다.'
-                });
-            } else if (userPassword != result[0].userPassword){
-                res.json({
-                    'success' : false,
-                    'message': '비밀번호가 틀렸습니다.'
-                });
-            } else {
-                res.json({
-                    'success' : true,
-                    'message': '로그인 성공!' + result[0].userID + '님 환영합니다.'
-                });
-            }
-        }
-    });
-});
-
-//---------------------------real register/login
+//---------------------------register/login
 app.post('/user/register', function (req, res) {
     var UserName = req.body.UserName;
     var UserId = req.body.UserId;
@@ -85,7 +33,7 @@ app.post('/user/register', function (req, res) {
 
     connection.query(sql, params, function(err, result){
         if(err)
-        console.logd(err);
+        console.log(err);
         else{
             res.json({
                 'success': true,
@@ -125,8 +73,8 @@ app.post('/user/login', function (req, res) {
     });
 });
 
-app.get('/user/check', function (req, res) {
-    var UserId = req.query.UserId;
+app.post('/user/check', function (req, res) {
+    var UserId = req.body.UserId;
 
     var sql = 'select * from UserInfo where UserId = ?';
 
@@ -149,15 +97,16 @@ app.get('/user/check', function (req, res) {
     });
 });
 
-//---------------------------archi
-app.get('/archi/info', function (req, res) {
-    var ApiName = req.query.ApiName; 
+//---------------------------archi 
+//건축물 정보 호출
+app.post('/archi/info', function (req, res) {
+    var ApiName = req.body.ApiName; 
   
     var sql = 'select ArchiName, ArchiHistory, ArchiExplain, ArchiIssue, ArchiMaker from ArchiInfo where ApiName = ?';
 
     connection.query(sql, ApiName, function(err, result){
         if(err)
-        console.log(err);
+            console.log(err);
         else{
             res.json({
                 'name': result[0].ArchiName,
@@ -166,6 +115,52 @@ app.get('/archi/info', function (req, res) {
                 'issue': result[0].ArchiIssue,
                 'maker': result[0].ArchiMaker
             });
+        }
+    });
+});
+
+//사용자 검색 내역 저장: 사용자 아이디, 검색한 건축물 이름, 검색한 시간을 넘겨 받는다.
+app.post('/archi/record', function (req, res) {
+    var RecoUser = req.body.RecoUser;
+    var RecoArchi = req.body.RecoArchi;
+    var RecoTime = req.body.RecoTime;
+
+    var sql = 'insert into ArchiReco (RecoUser, RecoArchi, RecoTime) values (?, ?, ?)';
+    var params = [RecoUser, RecoArchi, RecoTime];
+
+    connection.query(sql, params, function(err, result){
+        if(err)
+            console.log(err);
+        else{
+            res.json({
+                'success': true,
+                'message': '검색 기록에 성공하셨습니다.'
+            });
+        }
+    });
+});
+
+//사용자 검색 내역 조회: 사용자 아이디를 넘겨 받는다.
+app.post('/archi/list', function (req, res) {
+    var RecoUser = req.body.RecoUser; 
+  
+    var sql = 'select distinct RecoArchi, RecoTime from ArchiReco where RecoUser = ? order by RecoTime desc';
+
+    connection.query(sql, RecoUser, function(err, result){
+        if (err)
+            console.log(err);
+        else {
+            if (result.length == 0) {
+                res.json({
+                    'message': '검색 내역이 없습니다.',
+                    result: result
+                });
+            } else {
+                res.json({
+                    'message': '검색 내역을 출력합니다.',
+                    result: result
+                });
+            }
         }
     });
 });
