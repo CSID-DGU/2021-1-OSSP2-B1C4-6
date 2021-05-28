@@ -192,3 +192,45 @@ app.post('/archi/list/photo', function (req, res) {
         }
     });
 });
+
+//사용자 건축물 추천: 사용자 아이디를 넘겨 받는다. 성별과 나이(0~9, 10~19, 20~29, 30~39, 40~49, 50~59, 60~)에 따라 추천.
+app.post('/archi/recommend', function (req, res) {
+    var UserId = req.body.UserId;
+
+    var sql1 = 'select UserSex, UserAge from UserInfo where UserId = ?';
+
+    connection.query(sql1, UserId, function(query_one_err, rows){
+        if (query_one_err)  
+            console.log(query_one_err);
+        else {
+            var UserSex = rows[0].UserSex;
+            var UserAge = rows[0].UserAge;
+
+            var MoreThanAge = (UserAge/10)*10;
+            var BelowAge;
+            if(MoreThanAge>59) BelowAge = 300;
+            else BelowAge = MoreThanAge+10;
+
+            var sql2 = 'SELECT ArchiName, time from etc where ArchiName IN (select RecoArchi FROM ArchiReco R WHERE R.RecoUser IN (select UserId from UserInfo where UserSex=\''+UserSex+'\' and UserAge>='+MoreThanAge+' and UserAge<'+ BelowAge +') GROUP BY RecoArchi ORDER BY COUNT(RecoArchi))';
+            var params = [UserSex, UserAge];
+
+            connection.query(sql2, params, function(query_two_err, result) {
+                if (query_two_err)
+                    console.log(query_two_err);
+                else{
+                    if (result.length == 0) {
+                        res.json({
+                            'message': '추천 가능한 건축물 없습니다.',
+                            result: result
+                        });
+                    } else {
+                        res.json({
+                            'message': '사용자에게 추천할 건축물을 출력합니다.',
+                            result: result
+                        });
+                    }
+                }
+            });
+        }
+    });
+});
