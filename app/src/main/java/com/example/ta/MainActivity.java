@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,12 +31,8 @@ import com.android.volley.toolbox.Volley;
 import com.example.ta.util.GetInfoUtils;
 import com.example.ta.util.PackageManagerUtils;
 import com.example.ta.util.PermissionUtils;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
@@ -68,9 +65,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener,OnMapReadyCallback{
+public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener{
 
     private static String ApiName;
+    @BindView(R.id.btn_research_history)
+    FloatingActionButton btn_research_history;
     @BindView(R.id.fab)
     FloatingActionButton fab;
     @BindView(R.id.image_details)
@@ -79,12 +78,34 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     ImageView mMainImage;
     @BindView(R.id.infotitle)
     TextView infotitle;
-    @BindView(R.id.info)
-    TextView info;
-    @BindView(R.id.ttsButton)
-    Button ttsButton;
+    @BindView(R.id.info_history)
+    TextView info_history;
+    @BindView(R.id.info_explain)
+    TextView info_explain;
+    @BindView(R.id.info_issue)
+    TextView info_issue;
+    @BindView(R.id.info_architec)
+    TextView info_architec;
+    @BindView(R.id.info_name)
+    TextView info_name;
+    @BindView(R.id.ttsButton_history)
+    Button ttsButton_history;
+    @BindView(R.id.ttsButton_architec)
+    Button ttsButton_architec;
+    @BindView(R.id.ttsButton_issue)
+    Button ttsButton_issue;
+    @BindView(R.id.ttsButton_explain)
+    Button ttsButton_explain;
+    @BindView(R.id.history)
+    Button history;
+    @BindView(R.id.explain)
+    Button explain;
+    @BindView(R.id.architec)
+    Button architec;
+    @BindView(R.id.issue)
+    Button issue;
 
-    private static final String CLOUD_VISION_API_KEY = "API_KEY";
+    private static final String CLOUD_VISION_API_KEY = "AIzaSyB0HdLQsYYLT3ltcZjhxhuOO47Msx_73M8";
     public static final String FILE_NAME = "temp.jpg";
     private static final String ANDROID_CERT_HEADER = "X-Android-Cert";
     private static final String ANDROID_PACKAGE_HEADER = "X-Android-Package";
@@ -113,21 +134,14 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         tts = new TextToSpeech(this, this);
     }
 
+    @OnClick(R.id.btn_research_history)
+    void goto_research_history(){
 
-    @Override
-    public void onMapReady(final GoogleMap googleMap){
-        mMap = googleMap;
+        Intent intent = new Intent(this, research_history.class);
+        startActivity(intent);
 
-        com.google.android.gms.maps.model.LatLng SEOUL = new LatLng(37.56,126.97);
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(SEOUL);
-        markerOptions.title("서울");
-        markerOptions.snippet("한국의 수도");
-        mMap.addMarker(markerOptions);
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(SEOUL));
 
     }
-
     @OnClick(R.id.fab)
     void CloudVisionImage() {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -138,18 +152,58 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    @OnClick(R.id.ttsButton)
-    void ttsStart() {
+    @OnClick(R.id.ttsButton_history)
+    void ttsStart_history() {
         // 디비에서 text 가져오기
-        CharSequence text = info.getText();
+        CharSequence text = info_history.getText();
         tts.setPitch((float) 0.6); // 음성 톤 높이 지정
-        tts.setSpeechRate((float) 0.1); // 음성 속도 지정
+        tts.setSpeechRate((float) 1); // 음성 속도 지정
 
         // 첫 번째 매개변수: 음성 출력을 할 텍스트
         // 두 번째 매개변수: 1. TextToSpeech.QUEUE_FLUSH - 진행중인 음성 출력을 끊고 이번 TTS의 음성 출력
         //                 2. TextToSpeech.QUEUE_ADD - 진행중인 음성 출력이 끝난 후에 이번 TTS의 음성 출력
         tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "id1");
     }
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @OnClick(R.id.ttsButton_explain)
+    void ttsStart_explain() {
+        // 디비에서 text 가져오기
+        CharSequence text = info_explain.getText();
+        tts.setPitch((float) 0.6); // 음성 톤 높이 지정
+        tts.setSpeechRate((float) 1); // 음성 속도 지정
+
+        // 첫 번째 매개변수: 음성 출력을 할 텍스트
+        // 두 번째 매개변수: 1. TextToSpeech.QUEUE_FLUSH - 진행중인 음성 출력을 끊고 이번 TTS의 음성 출력
+        //                 2. TextToSpeech.QUEUE_ADD - 진행중인 음성 출력이 끝난 후에 이번 TTS의 음성 출력
+        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "id1");
+    }
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @OnClick(R.id.ttsButton_issue)
+    void ttsStart_issue() {
+        // 디비에서 text 가져오기
+        CharSequence text = info_issue.getText();
+        tts.setPitch((float) 0.6); // 음성 톤 높이 지정
+        tts.setSpeechRate((float) 1); // 음성 속도 지정
+
+        // 첫 번째 매개변수: 음성 출력을 할 텍스트
+        // 두 번째 매개변수: 1. TextToSpeech.QUEUE_FLUSH - 진행중인 음성 출력을 끊고 이번 TTS의 음성 출력
+        //                 2. TextToSpeech.QUEUE_ADD - 진행중인 음성 출력이 끝난 후에 이번 TTS의 음성 출력
+        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "id1");
+    }
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @OnClick(R.id.ttsButton_architec)
+    void ttsStart_architec() {
+        // 디비에서 text 가져오기
+        CharSequence text = info_architec.getText();
+        tts.setPitch((float) 0.6); // 음성 톤 높이 지정
+        tts.setSpeechRate((float) 1); // 음성 속도 지정
+
+        // 첫 번째 매개변수: 음성 출력을 할 텍스트
+        // 두 번째 매개변수: 1. TextToSpeech.QUEUE_FLUSH - 진행중인 음성 출력을 끊고 이번 TTS의 음성 출력
+        //                 2. TextToSpeech.QUEUE_ADD - 진행중인 음성 출력이 끝난 후에 이번 TTS의 음성 출력
+        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "id1");
+    }
+
 
     @Override
     public void onDestroy() {
@@ -168,7 +222,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             if (result == TextToSpeech.LANG_NOT_SUPPORTED || result == TextToSpeech.LANG_MISSING_DATA) {
                 Log.e("TTS", "This Language is not supported");
             } else {
-                ttsButton.setEnabled(true);
+                ttsButton_explain.setEnabled(true);
             }
         } else {
             Log.e("TTS", "Initialization Failed!");
@@ -339,6 +393,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             try {
                 Log.d(TAG, "created Cloud Vision request object, sending request");
                 BatchAnnotateImagesResponse response = mRequest.execute();
+
                 return convertResponseToString(response);
 
             } catch (GoogleJsonResponseException e) {
@@ -393,19 +448,22 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         }
         return Bitmap.createScaledBitmap(bitmap, resizedWidth, resizedHeight, false);
     }
+
     private String convertResponseToString(BatchAnnotateImagesResponse response) {
         StringBuilder message = new StringBuilder();
+
+
 
         //LABEL.GETDISCRIPTION == 타이틀(건물) 이름
         List<EntityAnnotation> labels = response.getResponses().get(0).getLandmarkAnnotations();
         if (labels != null) {
+
             //서버 통신 건물 정보 가져오기
             //텍스트뷰에 정보 붙히기
             EntityAnnotation label = labels.get(0);
             ApiName = label.getDescription();
             message.append(String.format(Locale.US, "%s", ApiName));
             message.append("\n");
-
             Response.Listener<String> responseListener = new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
@@ -416,8 +474,20 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                         String explain = jsonObject.getString("explain");
                         String issue = jsonObject.getString("issue");
                         String maker = jsonObject.getString("maker");
+                    if(name != null){
 
-                        info.setText(explain);
+                        LinearLayout v_h,v_e,v_i,v_a;
+                        v_h = findViewById(R.id.linear_history);
+                        v_e = findViewById(R.id.linear_explain);
+                        v_i = findViewById(R.id.linear_issue);
+                        v_a = findViewById(R.id.linear_architec);
+                        v_h.setVisibility(View.VISIBLE);
+                        v_e.setVisibility(View.VISIBLE);
+                        v_i.setVisibility(View.VISIBLE);
+                        v_a.setVisibility(View.VISIBLE);
+                    }
+
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -426,6 +496,143 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             GetInfoUtils getInfoUtils = new GetInfoUtils(ApiName, responseListener);
             RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
             queue.add(getInfoUtils);
+
+            explain.setOnClickListener(new View.OnClickListener() {
+                                           @Override
+                                           public void onClick(View v) {
+                        Response.Listener<String> responseListener = new Response.Listener<String>() {
+                         @Override
+                         public void onResponse(String response) {
+                             try {
+                                 JSONObject jsonObject = new JSONObject(response);
+                                 String name = jsonObject.getString("name");
+                                 String history = jsonObject.getString("history");
+                                 String explain = jsonObject.getString("explain");
+                                 String issue = jsonObject.getString("issue");
+                                 String maker = jsonObject.getString("maker");
+
+
+                                 info_explain.setText(explain);
+
+                             } catch (JSONException e) {
+                                 e.printStackTrace();
+                             }
+                         }
+                        };
+                        GetInfoUtils getInfoUtils = new GetInfoUtils(ApiName, responseListener);
+                        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+                        queue.add(getInfoUtils);
+                                           }
+                                       }
+            );
+            history.setOnClickListener(new View.OnClickListener() {
+                                           @Override
+                                           public void onClick(View v) {
+                                               Response.Listener<String> responseListener = new Response.Listener<String>() {
+                                                   @Override
+                                                   public void onResponse(String response) {
+                                                       try {
+                                                           JSONObject jsonObject = new JSONObject(response);
+                                                           String name = jsonObject.getString("name");
+                                                           String history = jsonObject.getString("history");
+                                                           String explain = jsonObject.getString("explain");
+                                                           String issue = jsonObject.getString("issue");
+                                                           String maker = jsonObject.getString("maker");
+
+
+                                                           info_history.setText(history);
+
+                                                       } catch (JSONException e) {
+                                                           e.printStackTrace();
+                                                       }
+                                                   }
+                                               };
+                                               GetInfoUtils getInfoUtils = new GetInfoUtils(ApiName, responseListener);
+                                               RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+                                               queue.add(getInfoUtils);
+                                           }
+
+                                       }
+            );
+            issue.setOnClickListener(new View.OnClickListener() {
+                                           @Override
+                                           public void onClick(View v) {
+                                               Response.Listener<String> responseListener = new Response.Listener<String>() {
+                                                   @Override
+                                                   public void onResponse(String response) {
+                                                       try {
+                                                           JSONObject jsonObject = new JSONObject(response);
+                                                           String name = jsonObject.getString("name");
+                                                           String history = jsonObject.getString("history");
+                                                           String explain = jsonObject.getString("explain");
+                                                           String issue = jsonObject.getString("issue");
+                                                           String maker = jsonObject.getString("maker");
+
+                                                           info_issue.setText(issue);
+
+                                                       } catch (JSONException e) {
+                                                           e.printStackTrace();
+                                                       }
+                                                   }
+                                               };
+                                               GetInfoUtils getInfoUtils = new GetInfoUtils(ApiName, responseListener);
+                                               RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+                                               queue.add(getInfoUtils);
+                                           }
+                                       }
+            );
+            architec.setOnClickListener(new View.OnClickListener() {
+                                           @Override
+                                           public void onClick(View v) {
+                                               Response.Listener<String> responseListener = new Response.Listener<String>() {
+                                                   @Override
+                                                   public void onResponse(String response) {
+                                                       try {
+                                                           JSONObject jsonObject = new JSONObject(response);
+                                                           String name = jsonObject.getString("name");
+                                                           String history = jsonObject.getString("history");
+                                                           String explain = jsonObject.getString("explain");
+                                                           String issue = jsonObject.getString("issue");
+                                                           String maker = jsonObject.getString("maker");
+
+                                                           info_architec.setText(maker);
+                                                       } catch (JSONException e) {
+                                                           e.printStackTrace();
+                                                       }
+                                                   }
+                                               };
+                                               GetInfoUtils getInfoUtils = new GetInfoUtils(ApiName, responseListener);
+                                               RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+                                               queue.add(getInfoUtils);
+                                           }
+                                       }
+            );
+
+            /*Response.Listener<String> responseListener = new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
+                        String name = jsonObject.getString("name");
+                        String history = jsonObject.getString("history");
+                        String explain = jsonObject.getString("explain");
+                        String issue = jsonObject.getString("issue");
+                        String maker = jsonObject.getString("maker");
+
+
+                        info_explain.setText(explain);
+                        info_history.setText(history);
+                        info_issue.setText(issue);
+                        info_architec.setText(maker);
+                        info_name.setText(name);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            GetInfoUtils getInfoUtils = new GetInfoUtils(ApiName, responseListener);
+            RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+            queue.add(getInfoUtils);*/
 
 
 

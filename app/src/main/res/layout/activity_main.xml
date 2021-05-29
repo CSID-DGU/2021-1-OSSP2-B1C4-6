@@ -38,17 +38,9 @@
                     android:textColor="@color/white"
                     android:textSize="20sp" />
 
-                <Button
-                    android:id="@+id/ttsButton"
-                    android:layout_width="60dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:background="@mipmap/ic_tts" />
+
 
             </LinearLayout>
-
-
-
 
             <ImageView
                 android:id="@+id/main_image"
@@ -65,10 +57,18 @@
             android:layout_below="@id/lltitle">
 
             <LinearLayout
+                android:id="@+id/linear_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:orientation="vertical">
+                <TextView
+                    android:id="@+id/info_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
 
 
                 <TextView
@@ -81,9 +81,146 @@
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     android:visibility="gone" />
+                <LinearLayout
+                    android:id="@+id/linear_history"
+                    android:layout_width="200dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="left"
+                    android:visibility="gone"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:orientation="horizontal">
+                    <Button
+                        android:id="@+id/history"
+                        android:layout_width="110dp"
+                        android:layout_height="match_parent"
+                        android:text="역사적 설명 보기"
+                        android:layout_weight="1"
+                        />
+                    <Button
+                        android:id="@+id/ttsButton_history"
+                        android:layout_width="1dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@mipmap/ic_tts" />
+
+
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/info_history"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
+
+            <LinearLayout
+
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_gravity="left"
+                android:layout_marginTop="20dp"
+                android:visibility="gone"
+                android:id="@+id/linear_explain"
+                android:layout_marginBottom="20dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/explain"
+                    android:layout_width="110dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="left"
+                    android:layout_weight="1"
+                    android:text="건축물 설명 보기"
+                    />
+                <Button
+                    android:id="@+id/ttsButton_explain"
+                    android:layout_width="1dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@mipmap/ic_tts"/>
+
+
+
+            </LinearLayout>
 
                 <TextView
-                    android:id="@+id/info"
+                    android:id="@+id/info_explain"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
+
+            <LinearLayout
+                android:id="@+id/linear_issue"
+
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_gravity="left"
+                android:visibility="gone"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/issue"
+                    android:layout_width="110dp"
+
+                    android:layout_height="match_parent"
+                    android:layout_gravity="left"
+                    android:layout_weight="1"
+                    android:text="이슈 설명 보기"
+                     />
+
+                <Button
+                    android:id="@+id/ttsButton_issue"
+                    android:layout_width="1dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@mipmap/ic_tts"/>
+
+            </LinearLayout>
+
+                <TextView
+                    android:id="@+id/info_issue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
+
+
+
+            <LinearLayout
+                android:id="@+id/linear_architec"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_gravity="left"
+                android:layout_marginTop="20dp"
+                android:visibility="gone"
+                android:layout_marginBottom="20dp"
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/architec"
+                    android:layout_width="110dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="left"
+                    android:text="건축가 설명 보기"
+                    android:layout_weight="1"
+ />
+
+                <Button
+                    android:id="@+id/ttsButton_architec"
+                    android:layout_width="1dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@mipmap/ic_tts"/>
+
+            </LinearLayout>
+                <TextView
+                    android:id="@+id/info_architec"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
@@ -93,13 +230,33 @@
         </ScrollView>
     </RelativeLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="10dp"
-        android:backgroundTint="#FFF79A"
-        android:src="@android:drawable/ic_menu_gallery" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_gravity="end|bottom"
+        android:orientation="horizontal">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_margin="10dp"
+            android:backgroundTint="#FFF79A"
+            android:src="@android:drawable/ic_menu_gallery" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btn_research_history"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_margin="10dp"
+            android:backgroundTint="#FFF79A"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_recent_history"
+            />
+
+    </LinearLayout>
+
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

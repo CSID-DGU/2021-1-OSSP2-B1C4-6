@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
-import com.example.ta.MainActivity;
+import com.example.ta.MapActivity;
 import com.example.ta.R;
 import com.example.ta.util.LoginUtils;
 import com.google.android.material.textfield.TextInputEditText;
@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 if (success) {//로그인 성공시
                     Toast.makeText(getApplicationContext(), "로그인 성공", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, MapActivity.class);
                     startActivity(intent);
                     finish();
 
