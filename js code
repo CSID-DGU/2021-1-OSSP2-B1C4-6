@@ -123,10 +123,9 @@ app.post('/archi/info', function (req, res) {
 app.post('/archi/record', function (req, res) {
     var RecoUser = req.body.RecoUser;
     var RecoArchi = req.body.RecoArchi;
-    var RecoTime = req.body.RecoTime;
 
-    var sql = 'insert into ArchiReco (RecoUser, RecoArchi, RecoTime) values (?, ?, ?)';
-    var params = [RecoUser, RecoArchi, RecoTime];
+    var sql = 'insert into ArchiReco (RecoUser, RecoArchi) values (?, ?)';
+    var params = [RecoUser, RecoArchi];
 
     connection.query(sql, params, function(err, result){
         if(err)
@@ -164,6 +163,7 @@ app.post('/archi/list', function (req, res) {
         }
     });
 });
+
 
 //사용자 건축물 추천: 사용자 아이디를 넘겨 받는다. 성별과 나이(0~9, 10~19, 20~29, 30~39, 40~49, 50~59, 60~)에 따라 추천.
 app.post('/archi/recommend', function (req, res) {
