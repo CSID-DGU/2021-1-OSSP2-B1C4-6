@@ -183,7 +183,7 @@ app.post('/archi/recommend', function (req, res) {
             if(MoreThanAge>59) BelowAge = 300;
             else BelowAge = MoreThanAge+10;
 
-            var sql2 = 'SELECT ArchiName, time from etc where ArchiName IN (select RecoArchi FROM ArchiReco R WHERE R.RecoUser IN (select UserId from UserInfo where UserSex=\''+UserSex+'\' and UserAge>='+MoreThanAge+' and UserAge<'+ BelowAge +') GROUP BY RecoArchi ORDER BY COUNT(RecoArchi))';
+            var sql2 = 'SELECT ArchiName, time, photo from etc where ArchiName IN (select RecoArchi FROM ArchiReco R WHERE R.RecoUser IN (select UserId from UserInfo where UserSex=\''+UserSex+'\' and UserAge>='+MoreThanAge+' and UserAge<'+ BelowAge +') GROUP BY RecoArchi ORDER BY COUNT(RecoArchi))';
             var params = [UserSex, UserAge];
 
             connection.query(sql2, params, function(query_two_err, result) {
