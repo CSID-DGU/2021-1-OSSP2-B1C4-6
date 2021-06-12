@@ -14,10 +14,12 @@ app.listen(port, function () {
 var connection = mysql.createConnection({
     host: "",
     user: "",
-    database: "TOUR",
+    database: "",
     password: "",
     port: 3306
 });
+
+
 
 //---------------------------register/login
 app.post('/user/register', function (req, res) {
@@ -143,7 +145,7 @@ app.post('/archi/record', function (req, res) {
 app.post('/archi/list', function (req, res) {
     var RecoUser = req.body.RecoUser; 
   
-    var sql = 'select distinct RecoArchi, RecoTime from ArchiReco where RecoUser = ? order by RecoTime desc';
+    var sql = 'select I.ArchiName, R.RecoTime from ArchiInfo I, ArchiReco R where R.RecoArchi=I.ApiName and RecoUser = ? order by RecoTime desc';
 
     connection.query(sql, RecoUser, function(err, result){
         if (err)
@@ -163,7 +165,6 @@ app.post('/archi/list', function (req, res) {
         }
     });
 });
-
 
 //사용자 건축물 추천: 사용자 아이디를 넘겨 받는다. 성별과 나이(0~9, 10~19, 20~29, 30~39, 40~49, 50~59, 60~)에 따라 추천.
 app.post('/archi/recommend', function (req, res) {
@@ -190,6 +191,7 @@ app.post('/archi/recommend', function (req, res) {
                 if (query_two_err)
                     console.log(query_two_err);
                 else{
+                    
                     if (result.length == 0) {
                         res.json({
                             'message': '추천 가능한 건축물 없습니다.',
@@ -197,7 +199,7 @@ app.post('/archi/recommend', function (req, res) {
                         });
                     } else {
                         res.json({
-                            'message': '사용자에게 추천할 건축물을 출력합니다.',
+                            'message': '추천 건물을 출력합니다.',
                             result: result
                         });
                     }
